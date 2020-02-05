@@ -15,5 +15,6 @@ struct wavfile{
   unsigned short bits_per_sample;
   unsigned char chunk_header[4];
   unsigned int data_sizel;
-  char* sound_data;
 };
+
+struct wavfile* parse(char *);

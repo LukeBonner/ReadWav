@@ -24,27 +24,24 @@ size_t read_file(char* filename, char** buffer){
 
   FILE *f = fopen(filename,"rb");
   //now we go to the end of the file
-  fseek(filename,0,SEEK_END);
+  fseek(f,0,SEEK_END);
   //now that we are at the end of the file, we can set
   //the current location ( end of the file ) to our file size
-  long filesize = ftell(filename);
+  long filesize = ftell(f);
   //now we go back to the start of the file
-  fseek(filename,0,SEEK_SET);
+  fseek(f,0,SEEK_SET);
 
   //allocate memory for our "string" with our filesize...plus 1
   //because of array counting!
-  buffer = malloc(filesize+1);
+  *buffer = malloc(filesize+1);
 
 
   //read in our file information into string
-  fread(buffer,1,filesize,filename);
+  fread(*buffer,1,filesize,f);
 
-  //call parse to pass over the string to be analyzed into wav format
-  parse(buffer);
 
   //finally, close the file
-  fclose(filename);
-  free(buffer);
+  fclose(f);
 
   return filesize;
 }
@@ -54,7 +51,9 @@ size_t read_file(char* filename, char** buffer){
   this function will output the
 */
 size_t write_file(char* filename,char** buffer,size_t size){
+  int elements = size/sizeof(char);
+  FILE *f = fopen(filename,"wb");
+  fwrite(buffer,size,elements,f);
 
-
-
+  return size;
 }
